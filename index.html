@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <body>
+        <div class="container" ng-app="myApp" ng-controller="myCtrl">
+            <input type="number" class="form-control" ng-model="number1" placeholder="Number 1" aria-label="Number 1">
+            <input type="number" class="form-control" ng-model="number2" placeholder="Number 2" aria-label="Number 2">
+            <button type="button" ng-click="getResult()" class="btn btn-success">Sum</button>
+            <p ng-bind="result"></p>
+        </div>
+    </body>
+    <script>
+        var app = angular.module("myApp", []);
+        app.controller("myCtrl", function($scope,  $http) {
+            $scope.getResult = function() {
+                // $scope.result = $scope.number1 + $scope.number2;
+                $http({
+                    method : "GET",
+                    url : "http://localhost:3000/sum",
+                    params: { number1: $scope.number1, number2: $scope.number2}
+                }).then(function mySuccess(response) {
+                    $scope.result = response.data.result;
+                }, function myError(response) {
+                    $scope.result = response.statusText;
+                });
+            }
+        });
+    </script>
+</html>
